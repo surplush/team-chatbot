@@ -74,6 +74,21 @@ def classify_question_type(question_ko: str) -> str:
 def extract_professor_name(question: str) -> str | None:
     match = re.search(r"([가-힣]{2,4})\s*교수", question)
     return match.group(1) if match else None
+# ✅ 워드 클라우드 생성 함수
+def generate_wordcloud(text):
+    cleaned_text = re.sub(r"\b(et al\.?|ET AL\.?)\b", "", text, flags=re.IGNORECASE)
+    stopwords = set(WordCloud().stopwords)
+    stopwords.update(["et", "al", "et al"])
+
+    wordcloud = WordCloud(
+        background_color="white",
+        width=800,
+        height=400,
+        stopwords=stopwords
+    ).generate(cleaned_text)
+
+    st.subheader("📌 주요 연구 키워드")
+    st.image(wordcloud.to_array())
 
 # def get_first_page_summary(doc: Document) -> str:
 #     title = doc.metadata.get("title", "제목 정보 없음")
