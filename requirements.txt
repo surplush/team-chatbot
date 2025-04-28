@@ -8,3 +8,4 @@ pysqlite3-binary
 pypdf
 langchain-text-splitters
 openai
+wordcloud
