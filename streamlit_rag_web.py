@@ -17,6 +17,7 @@ from langchain_core.runnables.history import RunnableWithMessageHistory
 from langchain.prompts import ChatPromptTemplate, PromptTemplate
 from langchain.schema import Document
 from langchain_community.chat_message_histories.streamlit import StreamlitChatMessageHistory
+from wordcloud import WordCloud
 
 __import__('pysqlite3')
 import sys
@@ -208,6 +209,11 @@ if prompt_message := st.chat_input("질문을 입력해주세요 :)"):
                     st.session_state["messages"].append({"role": "assistant", "content": result.content})
                     st.markdown(f"### 🔍 분석 결과: `{question_type}`")
                     st.write(result.content)
+                    
+                    # 워드클라우드
+                    if question_type == "연구_흐름":
+                        all_text = " ".join(doc.page_content for doc in docs)
+                        generate_wordcloud(all_text)
 
             except Exception as e:
                 st.error(f"오류 발생: {str(e)}")
